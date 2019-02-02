@@ -14,10 +14,13 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <th>123 василек</th>
-                                <td>Питер 12.08.19</td>
-                                <td>Москва 12.08.19</td>
+                            <tr v-for="route in list">
+                                <th>{{route.train.number}} {{route.train.name}}</th>
+                                <td>{{route.points[0].city.name}} {{route.points[0].date|formatDate}}</td>
+                                <td>
+                                    {{route.points[route.points.length-1].city.name}}
+                                    {{route.points[route.points.length-1].date|formatDate}}
+                                </td>
                                 <td><a class="button"><i class="fas fa-shopping-cart"></i></a></td>
                             </tr>
                             </tbody>
@@ -31,12 +34,24 @@
 </template>
 
 <script>
+    import moment from 'moment';
     import ModalComponent from './ModalComponent';
 
     export default {
+        props: {
+            list: {
+                type: Array,
+                required: true
+            }
+        },
         components: {
             ModalComponent,
         },
+        filters: {
+            formatDate(value) {
+                return moment(value).format("YYYY-MM-DD");
+            }
+        }
     }
 </script>
 

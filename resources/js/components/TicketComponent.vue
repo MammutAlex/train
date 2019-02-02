@@ -1,7 +1,7 @@
 <template>
     <div>
-        <search-component/>
-        <list-component/>
+        <search-component @routes="setList"/>
+        <list-component :list="list"/>
     </div>
 </template>
 
@@ -14,8 +14,15 @@
             SearchComponent,
             ListComponent,
         },
-        mounted() {
-            console.log('Component mounted.')
+        data() {
+            return {
+                list: [],
+            }
+        },
+        methods: {
+            setList(data) {
+                this.list = data;
+            }
         }
     }
 </script>

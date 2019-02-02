@@ -1763,7 +1763,12 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _ModalComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalComponent */ "./resources/js/components/ModalComponent.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ModalComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalComponent */ "./resources/js/components/ModalComponent.vue");
+//
+//
+//
 //
 //
 //
@@ -1797,9 +1802,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    list: {
+      type: Array,
+      required: true
+    }
+  },
   components: {
-    ModalComponent: _ModalComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+    ModalComponent: _ModalComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  filters: {
+    formatDate: function formatDate(value) {
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(value).format("YYYY-MM-DD");
+    }
   }
 });
 
@@ -1883,6 +1900,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1892,10 +1915,25 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      cityFrom: null,
-      cityTo: null,
-      dateTime: new Date()
+      form: {
+        from: null,
+        to: null,
+        date: new Date()
+      }
     };
+  },
+  methods: {
+    searchRoute: function searchRoute() {
+      var _this = this;
+
+      axios.get('api/search/route', {
+        params: this.form
+      }).then(function (response) {
+        _this.$emit('routes', response.data.data);
+      }).catch(function (error) {
+        console.log(error);
+      });
+    }
   }
 });
 
@@ -1926,8 +1964,15 @@ __webpack_require__.r(__webpack_exports__);
     SearchComponent: _SearchComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
     ListComponent: _ListComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
-  mounted: function mounted() {
-    console.log('Component mounted.');
+  data: function data() {
+    return {
+      list: []
+    };
+  },
+  methods: {
+    setList: function setList(data) {
+      this.list = data;
+    }
   }
 });
 
@@ -20162,52 +20207,96 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_vm._m(0), _vm._v(" "), _c("modal-component")], 1)
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "container" }, [
+        _c("div", { staticClass: "notification" }, [
+          _c(
+            "div",
+            { staticClass: "columns is-centered is-vcentered is-mobile" },
+            [
+              _c("div", { staticClass: "column is-narrow has-text-centered" }, [
+                _c("table", { staticClass: "table" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
+                  _c(
+                    "tbody",
+                    _vm._l(_vm.list, function(route) {
+                      return _c("tr", [
+                        _c("th", [
+                          _vm._v(
+                            _vm._s(route.train.number) +
+                              " " +
+                              _vm._s(route.train.name)
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            _vm._s(route.points[0].city.name) +
+                              " " +
+                              _vm._s(_vm._f("formatDate")(route.points[0].date))
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("td", [
+                          _vm._v(
+                            "\n                                " +
+                              _vm._s(
+                                route.points[route.points.length - 1].city.name
+                              ) +
+                              "\n                                " +
+                              _vm._s(
+                                _vm._f("formatDate")(
+                                  route.points[route.points.length - 1].date
+                                )
+                              ) +
+                              "\n                            "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _vm._m(1, true)
+                      ])
+                    }),
+                    0
+                  )
+                ])
+              ])
+            ]
+          )
+        ])
+      ]),
+      _vm._v(" "),
+      _c("modal-component")
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "container" }, [
-      _c("div", { staticClass: "notification" }, [
-        _c(
-          "div",
-          { staticClass: "columns is-centered is-vcentered is-mobile" },
-          [
-            _c("div", { staticClass: "column is-narrow has-text-centered" }, [
-              _c("table", { staticClass: "table" }, [
-                _c("thead", [
-                  _c("tr", [
-                    _c("th", [_vm._v("Номер поезда")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Точка прыбытия")]),
-                    _vm._v(" "),
-                    _c("th", [_vm._v("Точка отправления")]),
-                    _vm._v(" "),
-                    _c("th")
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("tbody", [
-                  _c("tr", [
-                    _c("th", [_vm._v("123 василек")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Питер 12.08.19")]),
-                    _vm._v(" "),
-                    _c("td", [_vm._v("Москва 12.08.19")]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c("a", { staticClass: "button" }, [
-                        _c("i", { staticClass: "fas fa-shopping-cart" })
-                      ])
-                    ])
-                  ])
-                ])
-              ])
-            ])
-          ]
-        )
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Номер поезда")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Точка прыбытия")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Точка отправления")]),
+        _vm._v(" "),
+        _c("th")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("td", [
+      _c("a", { staticClass: "button" }, [
+        _c("i", { staticClass: "fas fa-shopping-cart" })
       ])
     ])
   }
@@ -20323,11 +20412,11 @@ var render = function() {
             _c("input-city-search", {
               attrs: { placeholder: "Откуда" },
               model: {
-                value: _vm.cityFrom,
+                value: _vm.form.from,
                 callback: function($$v) {
-                  _vm.cityFrom = $$v
+                  _vm.$set(_vm.form, "from", $$v)
                 },
-                expression: "cityFrom"
+                expression: "form.from"
               }
             })
           ],
@@ -20341,34 +20430,53 @@ var render = function() {
             _c("input-city-search", {
               attrs: { placeholder: "Куда" },
               model: {
-                value: _vm.cityTo,
+                value: _vm.form.to,
                 callback: function($$v) {
-                  _vm.cityTo = $$v
+                  _vm.$set(_vm.form, "to", $$v)
                 },
-                expression: "cityTo"
+                expression: "form.to"
               }
             })
           ],
           1
         ),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "column" },
-          [
-            _c("input-date", {
-              attrs: { placeholder: "Дата" },
-              model: {
-                value: _vm.dateTime,
-                callback: function($$v) {
-                  _vm.dateTime = $$v
+        _c("div", { staticClass: "column" }, [
+          _c("div", { staticClass: "columns" }, [
+            _c(
+              "div",
+              { staticClass: "column" },
+              [
+                _c("input-date", {
+                  attrs: { placeholder: "Дата" },
+                  model: {
+                    value: _vm.form.date,
+                    callback: function($$v) {
+                      _vm.$set(_vm.form, "date", $$v)
+                    },
+                    expression: "form.date"
+                  }
+                })
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "column" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "button",
+                  on: {
+                    click: function($event) {
+                      _vm.searchRoute()
+                    }
+                  }
                 },
-                expression: "dateTime"
-              }
-            })
-          ],
-          1
-        )
+                [_c("i", { staticClass: "fas fa-search" })]
+              )
+            ])
+          ])
+        ])
       ])
     ])
   ])
@@ -20397,7 +20505,11 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    [_c("search-component"), _vm._v(" "), _c("list-component")],
+    [
+      _c("search-component", { on: { routes: _vm.setList } }),
+      _vm._v(" "),
+      _c("list-component", { attrs: { list: _vm.list } })
+    ],
     1
   )
 }

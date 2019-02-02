@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\RouteSearchRequest;
 use App\Route;
+use App\Http\Resources\Route as RouteResource;
 
 class RouteSearchController extends Controller
 {
-    public function index(int $start, int $end, string $date)
+    public function index(RouteSearchRequest $request)
     {
-        Route::whereHas('point', function ($query) use ($start, $end, $date) {
-            $query->where('city_id', $start)->orWhere('city_id', $end);
-        })->get();
+        return RouteResource::collection(Route::limit(5)->get());
     }
 }

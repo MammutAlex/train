@@ -14,4 +14,4 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/search/city/{text}', 'CitySearchController@index');
-Route::get('/search/{start}/{end}/{date}', 'RouteSearchController@index');
+Route::get('/search/route', 'RouteSearchController@index');
