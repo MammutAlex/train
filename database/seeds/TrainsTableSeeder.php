@@ -11,6 +11,6 @@ class TrainsTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Train::class, 50)->create();
+        factory(App\Train::class, 5)->create();
     }
 }

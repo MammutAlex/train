@@ -16,10 +16,10 @@
                             <tbody>
                             <tr v-for="route in list">
                                 <th>{{route.train.number}} {{route.train.name}}</th>
-                                <td>{{route.points[0].city.name}} {{route.points[0].date|formatDate}}</td>
+                                <td>{{route.points[0].city.name}} {{route.points[0].date}}</td>
                                 <td>
                                     {{route.points[route.points.length-1].city.name}}
-                                    {{route.points[route.points.length-1].date|formatDate}}
+                                    {{route.points[route.points.length-1].date}}
                                 </td>
                                 <td><a class="button"><i class="fas fa-shopping-cart"></i></a></td>
                             </tr>
@@ -34,7 +34,6 @@
 </template>
 
 <script>
-    import moment from 'moment';
     import ModalComponent from './ModalComponent';
 
     export default {
@@ -47,11 +46,6 @@
         components: {
             ModalComponent,
         },
-        filters: {
-            formatDate(value) {
-                return moment(value).format("YYYY-MM-DD");
-            }
-        }
     }
 </script>
 

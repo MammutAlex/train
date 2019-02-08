@@ -24,6 +24,7 @@
 </template>
 
 <script>
+    import moment from 'moment';
     import InputCitySearch from '../inputs/CitySearch';
     import InputDate from '../inputs/Date';
 
@@ -37,7 +38,7 @@
                 form: {
                     from: null,
                     to: null,
-                    date: new Date
+                    date: moment().format('YYYY-MM-DD')
                 }
             }
         },

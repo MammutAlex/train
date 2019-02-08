@@ -1763,9 +1763,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _ModalComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ModalComponent */ "./resources/js/components/ModalComponent.vue");
+/* harmony import */ var _ModalComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./ModalComponent */ "./resources/js/components/ModalComponent.vue");
 //
 //
 //
@@ -1801,7 +1799,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -1811,12 +1808,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   components: {
-    ModalComponent: _ModalComponent__WEBPACK_IMPORTED_MODULE_1__["default"]
-  },
-  filters: {
-    formatDate: function formatDate(value) {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(value).format("YYYY-MM-DD");
-    }
+    ModalComponent: _ModalComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -1879,8 +1871,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _inputs_CitySearch__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../inputs/CitySearch */ "./resources/js/inputs/CitySearch.vue");
-/* harmony import */ var _inputs_Date__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../inputs/Date */ "./resources/js/inputs/Date.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _inputs_CitySearch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../inputs/CitySearch */ "./resources/js/inputs/CitySearch.vue");
+/* harmony import */ var _inputs_Date__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../inputs/Date */ "./resources/js/inputs/Date.vue");
 //
 //
 //
@@ -1906,19 +1900,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    InputCitySearch: _inputs_CitySearch__WEBPACK_IMPORTED_MODULE_0__["default"],
-    InputDate: _inputs_Date__WEBPACK_IMPORTED_MODULE_1__["default"]
+    InputCitySearch: _inputs_CitySearch__WEBPACK_IMPORTED_MODULE_1__["default"],
+    InputDate: _inputs_Date__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   data: function data() {
     return {
       form: {
         from: null,
         to: null,
-        date: new Date()
+        date: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD')
       }
     };
   },
@@ -2066,7 +2061,8 @@ __webpack_require__.r(__webpack_exports__);
       default: 'Дата'
     },
     value: {
-      type: Date
+      type: String,
+      default: moment__WEBPACK_IMPORTED_MODULE_0___default()().format('YYYY-MM-DD')
     }
   },
   data: function data() {
@@ -2079,7 +2075,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     customFormatter: function customFormatter(date) {
-      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format("YYYY-MM-DD");
+      return moment__WEBPACK_IMPORTED_MODULE_0___default()(date).format('YYYY-MM-DD');
+    },
+    setDate: function setDate(date) {
+      this.$emit('input', this.customFormatter(date));
     }
   }
 });
@@ -20236,7 +20235,7 @@ var render = function() {
                           _vm._v(
                             _vm._s(route.points[0].city.name) +
                               " " +
-                              _vm._s(_vm._f("formatDate")(route.points[0].date))
+                              _vm._s(route.points[0].date)
                           )
                         ]),
                         _vm._v(" "),
@@ -20248,9 +20247,7 @@ var render = function() {
                               ) +
                               "\n                                " +
                               _vm._s(
-                                _vm._f("formatDate")(
-                                  route.points[route.points.length - 1].date
-                                )
+                                route.points[route.points.length - 1].date
                               ) +
                               "\n                            "
                           )
@@ -20589,11 +20586,7 @@ var render = function() {
       format: _vm.customFormatter,
       language: _vm.ru
     },
-    on: {
-      input: function($event) {
-        _vm.$emit("input", $event)
-      }
-    }
+    on: { input: _vm.setDate }
   })
 }
 var staticRenderFns = []

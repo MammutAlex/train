@@ -1,6 +1,6 @@
 <template>
-    <datepicker :value="value" :placeholder="placeholder" @input="$emit('input', $event)" input-class="input"
-                :format="customFormatter" :language="ru"/>
+    <datepicker :value="value" :placeholder="placeholder" @input="setDate"
+                input-class="input" :format="customFormatter" :language="ru"/>
 </template>
 
 <script>
@@ -15,7 +15,8 @@
                 default: 'Дата'
             },
             value: {
-                type: Date,
+                type: String,
+                default: moment().format('YYYY-MM-DD')
             }
         },
         data() {
@@ -30,7 +31,10 @@
         ,
         methods: {
             customFormatter(date) {
-                return moment(date).format("YYYY-MM-DD");
+                return moment(date).format('YYYY-MM-DD');
+            },
+            setDate(date) {
+                this.$emit('input', this.customFormatter(date));
             }
         }
     }

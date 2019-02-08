@@ -11,6 +11,6 @@ class RoutesTableSeeder extends Seeder
      */
     public function run()
     {
-        factory(App\Route::class, 100)->create();
+        factory(App\Route::class, 50)->create();
     }
 }

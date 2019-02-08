@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Point extends Model
 {
+    protected $dates = [
+        'arrival',
+    ];
+
     protected static function boot()
     {
         parent::boot();
