@@ -17,7 +17,7 @@ class Point extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => (string)$this->arrival->format('Y-m-d'),
+            'date' => (string)$this->arrival->format('Y-m-d h:m'),
             'city' => [
                 'id' => $this->city->id,
                 'name' => $this->city->name

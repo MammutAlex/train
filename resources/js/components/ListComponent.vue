@@ -15,7 +15,7 @@
                             </thead>
                             <tbody>
                             <tr v-for="route in list">
-                                <th>{{route.train.number}} {{route.train.name}}</th>
+                                <th v-text="route.name"></th>
                                 <td>{{route.points[0].city.name}} {{route.points[0].date}}</td>
                                 <td>
                                     {{route.points[route.points.length-1].city.name}}

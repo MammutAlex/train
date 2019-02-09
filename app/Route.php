@@ -15,4 +15,11 @@ class Route extends Model
     {
         return $this->hasMany(Point::class);
     }
+
+    public function getNameAttribute()
+    {
+        $start = $this->points()->first()->city->name;
+        $end = $this->points()->orderBy('arrival', 'desc')->first()->city->name;
+        return "{$this->train->number} {$this->train->name} ({$start} -> {$end})";
+    }
 }

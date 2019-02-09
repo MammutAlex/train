@@ -14,6 +14,10 @@ class RouteSearchController extends Controller
             $query->where('city_id', $request->from)->whereDate('arrival', $request->date);
         })->whereHas('points', function ($query) use ($request) {
             $query->where('city_id', $request->to);
-        })->get());
+        })->with(['points' => function ($query) use ($request) {
+            $query->whereIn('city_id', [$request->from, $request->to]);
+        }])->get()->filter(function ($route) use ($request) {
+            return $route->points[0]->city_id == $request->from;
+        }));
     }
 }

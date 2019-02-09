@@ -17,12 +17,13 @@ class Route extends JsonResource
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'train' => [
                 'id' => $this->train->id,
                 'number' => $this->train->number,
                 'name' => $this->train->name,
             ],
-            'points'=>Point::collection($this->points)
+            'points' => Point::collection($this->points)
         ];
     }
 }

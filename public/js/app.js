@@ -20223,13 +20223,9 @@ var render = function() {
                     "tbody",
                     _vm._l(_vm.list, function(route) {
                       return _c("tr", [
-                        _c("th", [
-                          _vm._v(
-                            _vm._s(route.train.number) +
-                              " " +
-                              _vm._s(route.train.name)
-                          )
-                        ]),
+                        _c("th", {
+                          domProps: { textContent: _vm._s(route.name) }
+                        }),
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
