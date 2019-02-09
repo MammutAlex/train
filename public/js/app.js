@@ -1798,7 +1798,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -1807,8 +1806,18 @@ __webpack_require__.r(__webpack_exports__);
       required: true
     }
   },
+  data: function data() {
+    return {
+      activeRoute: null
+    };
+  },
   components: {
     ModalComponent: _ModalComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  methods: {
+    setActive: function setActive(route) {
+      this.activeRoute = route;
+    }
   }
 });
 
@@ -1858,7 +1867,49 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    value: {
+      type: Object,
+      required: true
+    }
+  },
+  data: function data() {
+    return {
+      form: {}
+    };
+  },
+  mounted: function mounted() {
+    this.prepareComponent();
+  },
+  watch: {
+    value: function value() {
+      this.prepareComponent();
+    }
+  },
+  methods: {
+    prepareComponent: function prepareComponent() {
+      this.form = {
+        route_id: this.value.id,
+        start_point_id: this.value.points[0].id,
+        end_point_id: this.value.points[1].id,
+        name: ''
+      };
+    },
+    sendForm: function sendForm() {
+      var _this = this;
+
+      axios.post('api/tickets', this.form).then(function (response) {
+        window.open(response.data.data.url, '_blank');
+
+        _this.closeModal();
+      });
+    },
+    closeModal: function closeModal() {
+      this.$emit('input', null);
+    }
+  }
+});
 
 /***/ }),
 
@@ -20237,19 +20288,26 @@ var render = function() {
                         _vm._v(" "),
                         _c("td", [
                           _vm._v(
-                            "\n                                " +
-                              _vm._s(
-                                route.points[route.points.length - 1].city.name
-                              ) +
-                              "\n                                " +
-                              _vm._s(
-                                route.points[route.points.length - 1].date
-                              ) +
-                              "\n                            "
+                            _vm._s(route.points[1].city.name) +
+                              " " +
+                              _vm._s(route.points[1].date)
                           )
                         ]),
                         _vm._v(" "),
-                        _vm._m(1, true)
+                        _c("td", [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "button",
+                              on: {
+                                click: function($event) {
+                                  _vm.setActive(route)
+                                }
+                              }
+                            },
+                            [_c("i", { staticClass: "fas fa-shopping-cart" })]
+                          )
+                        ])
                       ])
                     }),
                     0
@@ -20261,7 +20319,17 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c("modal-component")
+      _vm.activeRoute
+        ? _c("modal-component", {
+            model: {
+              value: _vm.activeRoute,
+              callback: function($$v) {
+                _vm.activeRoute = $$v
+              },
+              expression: "activeRoute"
+            }
+          })
+        : _vm._e()
     ],
     1
   )
@@ -20280,16 +20348,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Точка отправления")]),
         _vm._v(" "),
         _c("th")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("a", { staticClass: "button" }, [
-        _c("i", { staticClass: "fas fa-shopping-cart" })
       ])
     ])
   }
@@ -20315,65 +20373,84 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal" }, [
-      _c("div", { staticClass: "modal-background" }),
-      _vm._v(" "),
-      _c("div", { staticClass: "modal-content" }, [
-        _c("div", { staticClass: "box" }, [
-          _c("article", { staticClass: "media" }, [
-            _c("div", { staticClass: "media-content" }, [
-              _c("div", { staticClass: "content" }, [
-                _c("p", [
-                  _vm._v("\n                            Поезд "),
-                  _c("b", [_vm._v("123")]),
-                  _vm._v(" с маршрутом "),
-                  _c("b", [_vm._v("Питер - Москва")])
+  return _c("div", { staticClass: "modal is-active" }, [
+    _c("div", { staticClass: "modal-background" }),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal-content" }, [
+      _c("div", { staticClass: "box" }, [
+        _c("article", { staticClass: "media" }, [
+          _c("div", { staticClass: "media-content" }, [
+            _c("div", { staticClass: "content" }, [
+              _c("p", [
+                _vm._v("\n                            Поезд "),
+                _c("b", { domProps: { textContent: _vm._s(_vm.value.name) } })
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field" }, [
+                _c("label", { staticClass: "label" }, [_vm._v("Ваше имя")]),
+                _vm._v(" "),
+                _c("div", { staticClass: "control" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.name,
+                        expression: "form.name"
+                      }
+                    ],
+                    staticClass: "input",
+                    attrs: { type: "text" },
+                    domProps: { value: _vm.form.name },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "name", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "field is-grouped" }, [
+                _c("div", { staticClass: "control" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-link",
+                      on: { click: _vm.sendForm }
+                    },
+                    [_vm._v("Купить")]
+                  )
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "field" }, [
-                  _c("label", { staticClass: "label" }, [_vm._v("Ваше имя")]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "control" }, [
-                    _c("input", {
-                      staticClass: "input",
-                      attrs: { type: "text", placeholder: "Text input" }
-                    })
-                  ])
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "field is-grouped" }, [
-                  _c("div", { staticClass: "control" }, [
-                    _c("button", { staticClass: "button is-link" }, [
-                      _vm._v("Купить")
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "control" }, [
-                    _c("button", { staticClass: "button is-text" }, [
-                      _vm._v("Отменить")
-                    ])
-                  ])
+                _c("div", { staticClass: "control" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "button is-text",
+                      on: { click: _vm.closeModal }
+                    },
+                    [_vm._v("Отменить")]
+                  )
                 ])
               ])
             ])
           ])
         ])
-      ]),
-      _vm._v(" "),
-      _c("button", {
-        staticClass: "modal-close is-large",
-        attrs: { "aria-label": "close" }
-      })
-    ])
-  }
-]
+      ])
+    ]),
+    _vm._v(" "),
+    _c("button", {
+      staticClass: "modal-close is-large",
+      attrs: { "aria-label": "close" },
+      on: { click: _vm.closeModal }
+    })
+  ])
+}
+var staticRenderFns = []
 render._withStripped = true
 
 

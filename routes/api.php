@@ -15,3 +15,6 @@ use Illuminate\Http\Request;
 
 Route::get('/search/city/{text}', 'CitySearchController@index');
 Route::get('/search/route', 'RouteSearchController@index');
+Route::resource('tickets', 'TicketController')->only([
+    'store', 'show'
+]);
